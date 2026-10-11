@@ -1,8 +1,12 @@
-## 安装与启动
-- 首先安装 [Node.js](https://nodejs.org/)。
-- 双击运行 安装.cmd。
-- 安装完成后，双击 启动副本.cmd 即可启动。
+## 🚀安装与启动
+主要面向 Windows 用户。
 
-## 说明
+- 安装 **[Node.js 22](https://nodejs.org/zh-cn)** 或更高版本。
+
+- 安装 **[PowerShell](https://learn.microsoft.com/zh-cn/powershell/scripting/install/install-powershell?view=powershell-7.6)**。
+
+把仓库下载下来，然后都在仓库目录下运行。
+
+## 📒说明
 - 副本APP完全可以共享你的主APP工作内容。你可以不同账号/相同账号同时登录。
 - 好了就这么简单。
