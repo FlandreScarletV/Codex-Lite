@@ -1,5 +1,5 @@
 ## 安装与启动
-- 首先安装 Node.js。
+- 首先安装 [Node.js](https://nodejs.org/)。
 - 双击运行 安装.cmd。
 - 安装完成后，双击 启动副本.cmd 即可启动。
 
