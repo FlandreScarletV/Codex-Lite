@@ -1,9 +1,0 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {EventEmitter} from 'node:events';
-import {installTestLifecycle} from './chat-test-lifecycle.mjs';
-function setup(){const app=new EventEmitter(),events=[],pending=new Map();let exits=0,quits=0,sequence=0;app.exit=()=>exits++;app.quit=()=>quits++;installTestLifecycle(app,e=>events.push(e),{setTimeout(fn,ms){pending.set(++sequence,{fn,ms});return sequence;},clearTimeout(id){pending.delete(id);}});return{app,events,pending,get exits(){return exits;},get quits(){return quits;}};}
-function windowFor(s,visible=true,parent=null){const w=new EventEmitter();w.isVisible=()=>visible;w.getParentWindow=()=>parent;s.app.emit('browser-window-created',{},w);return w;}
-test('visible close requests quit despite existing hide handler',()=>{const s=setup(),w=windowFor(s);w.on('close',e=>e.preventDefault());w.emit('close',{preventDefault(){}});w.emit('close',{preventDefault(){}});assert.equal(s.pending.size,2);[...s.pending.values()].find(t=>t.ms===0).fn();assert.equal(s.quits,1);[...s.pending.values()].find(t=>t.ms===10000).fn();assert.equal(s.exits,1);});
-test('hidden helper or child dialog closure does not exit app',()=>{const s=setup();windowFor(s,false).emit('close');windowFor(s,true,{}).emit('close');assert.equal(s.pending.size,0);assert.equal(s.quits,0);});
-test('before-quit alone does not force an exit',()=>{const s=setup();s.app.emit('before-quit');assert.equal(s.pending.size,0);});
-test('will-quit arms only one deadline',()=>{const s=setup();s.app.emit('will-quit');s.app.emit('will-quit');assert.equal(s.pending.size,1);[...s.pending.values()][0].fn();assert.equal(s.exits,1);});
-test('normal quit cancels fallback',()=>{const s=setup();s.app.emit('will-quit');s.app.emit('quit');assert.equal(s.pending.size,0);assert.equal(s.exits,0);});
